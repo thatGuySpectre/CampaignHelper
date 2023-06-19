@@ -9,6 +9,7 @@ GPT:
 MEMORY_MAX: 6                 # max number of messages to keep in non-vectorstore memory
 
 NAME:                         # a unique identifier for the bot, to enable multiple instances running on the same DB
+AI_NAME:                      # What the bot should call itself, and be referred to
 
 CHROMA:
   HOST: chroma-discord        # Hostname of ChromaDB REST instance.

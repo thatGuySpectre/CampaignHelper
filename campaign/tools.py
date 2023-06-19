@@ -157,7 +157,7 @@ def map_split(content, hard_min=50, hard_max=400):
 
     logger.debug(f"{split=}")
 
-    return split
+    return [i for i in split if i is not ""]
 
 
 TOOL_MAP = {

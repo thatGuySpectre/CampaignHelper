@@ -61,7 +61,7 @@ def query(message, author):
                 messages.pop(1)
 
             tools.add_message(author=author, message=message)
-            tools.add_message(author="Erebos", message=response.choices[0].message.content)
+            tools.add_message(author=config.get("AI_NAME"), message=response.choices[0].message.content)
 
             return response.choices[0].message.content
 
