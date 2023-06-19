@@ -1,0 +1,22 @@
+OPENAI_API_KEY: {your openai token. should not be shared publicly}
+DISCORD_TOKEN: {your discord bot token. should not be shared publicly}
+
+GPT:
+  MODEL: gpt-3.5-turbo-0613   # must be a model that supports function calls. currently allowed:
+                              # gpt-3.5-turbo-0613 gpt-3.5-turbo-16k-0613 gpt-4-0613 gpt-4-32k-0613
+  TEMPERATURE: 0              # model temperature per https://platform.openai.com/docs/api-reference/chat/create, must be between 0 and 2
+
+MEMORY_MAX: 6                 # max number of messages to keep in non-vectorstore memory
+
+CHROMA:
+  HOST: chroma-discord        # Hostname of ChromaDB REST instance.
+  PORT: 7000
+
+PROMPT: |                     # prompt for the model. feel free to experiment with roleplay and accuracy improvements. If you find one that works especially well, consider opening a pull request and adding it to the repo :)
+  You are an assistant for a DnD campaign. Your task is to provide information that is as accurate as possible. If you cannot provide some information, admit so.
+  
+  The following are excerpts from previous conversations, and may not be relevant:
+  
+  {history}
+  
+  Begin.

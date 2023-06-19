@@ -14,8 +14,8 @@ openai.api_key = config.get("OPENAI_API_KEY")
 logger = logging.getLogger()
 
 db = chromadb.Client(chromadb.Settings(chroma_api_impl="rest",
-                                       chroma_server_host="chroma-discord",
-                                       chroma_server_http_port="7123"
+                                       chroma_server_host=config.get("CHROMA").get("HOST"),
+                                       chroma_server_http_port=config.get("CHROMA").get("PORT")
 ))
 
 world = db.get_or_create_collection(
@@ -169,13 +169,13 @@ TOOL_MAP = {
 TOOLS = [
     {
         "name": "world_info",
-        "description": "Get information about the world, specific planets, creatures or people.",
+        "description": "Get information about the world, specific events, characters or places.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "The query to use for similarity search.",
+                    "description": "The topic you want to get information about.",
                     },
             },
         "required": ["query"],
@@ -183,13 +183,13 @@ TOOLS = [
     },
     {
         "name": "conversation_history",
-        "description": "Recall previous conversations with the crew. Should only be used when world_info returns no useful information.",
+        "description": "Recall previous conversations with the crew. Should only be used when world_info returns no useful information, or to get further information on previous chats with the users",
         "parameters": {
             "type": "object",
             "properties": {
                 "topic": {
                     "type": "string",
-                    "description": "The topic you want to remember things about",
+                    "description": "The conversation topic you want to remember things about",
                     },
             },
         "required": ["topic"],

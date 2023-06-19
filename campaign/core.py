@@ -5,7 +5,7 @@ import yaml
 
 import logging
 
-import campaign.tools
+from campaign import tools
 
 with open("config.yaml") as f:
     config = yaml.safe_load(f)
