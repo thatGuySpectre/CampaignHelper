@@ -63,8 +63,6 @@ def query(message, author):
 
             if len(messages) > config.get("MEMORY_MAX"):
                 messages = messages[:1] + messages[-config.get("MEMORY_MAX"):-1]
-            while sum([len(msg["content"].split(" ")) for msg in messages if msg["content"] is not None]) > 2000 and len(messages) > 2:
-                messages.pop(1)
 
             # tools.add_message(author=author, message=message)
             # tools.add_message(author=config.get("AI_NAME", "Assistant"), message=response.choices[0].message.content)
