@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Client(discord.Client):
-    def __init__(self, intents):
-        super().__init__(intents=intents)
+    def __init__(self, intent):
+        super().__init__(intents=intent)
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
@@ -22,7 +22,7 @@ class Client(discord.Client):
 
 intents = discord.Intents.all()
 
-bot = Client(intents=intents)
+bot = Client(intent=intents)
 
 
 @bot.event
@@ -30,7 +30,8 @@ async def on_message(ctx):
     logger.info("message: " + ctx.content)
     if ctx.author == bot.user:
         return
-    if bot.user.mentioned_in(ctx):
+    logger.info("content: " + ctx.content + " vs " + bot.user.mention)
+    if bot.user.mention in ctx.content:
         async with ctx.channel.typing():
             response = await aquery(message=ctx.content, author=ctx.author.name)
             await ctx.channel.send(response)
