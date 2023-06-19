@@ -50,35 +50,6 @@ def world_info(**kwargs):
     return out
 
 
-def chat_history(**kwargs):
-    if len(kwargs) != 1:
-        return None
-
-    topic = kwargs.get("topic")
-    if topic is None:
-        return None
-
-    results = history.query(query_texts=topic, n_results=8)
-
-    out = ""
-
-    for metadata, document in zip(results["metadatas"][0], results["documents"][0]):
-        if metadata is None:
-            out += f"unkown author: {document}\n\n"
-        else:
-            out += f"{metadata.get('author')} [{metadata.get('time')}] (part {metadata.get('num')}/{metadata.get('total')}): {document}\n"
-
-    return out
-
-
-def maybe_relevant(message):
-    results = history.query(query_texts=message, n_results=4)
-    out = ""
-    for metadata, document in zip(results["metadatas"][0], results["documents"][0]):
-        out += f"{metadata.get('author')} [{metadata.get('time')}] (part {metadata.get('num')}/{metadata.get('total')}): {document}\n"
-    return out
-
-
 def evaluate(call):
     func_name = call.get("name")
     args = call.get("arguments")
@@ -100,21 +71,6 @@ def evaluate(call):
         return None
 
     return func(**arguments)
-
-
-def add_message(author, message):
-    chunks = map_split(message)
-    chunk_amount = len(chunks)
-
-    time = datetime.datetime.now().isoformat(timespec="minutes", sep=" ")
-
-    for i, chunk in enumerate(chunks):
-        logger.info(f"adding with metadata {time=} {author=} {chunk_amount=}")
-        history.add(
-            ids=str(uuid.uuid4()),
-            documents=message,
-            metadatas={"time": time, "author": author, "num": i+1, "total": chunk_amount}
-        )
 
 
 def add_world_info(name, content):
@@ -164,7 +120,6 @@ def map_split(content, hard_min=50, hard_max=400):
 
 TOOL_MAP = {
     "world_info": world_info,
-    "conversation_history": chat_history
 }
 TOOLS = [
     {
@@ -179,20 +134,6 @@ TOOLS = [
                     },
             },
         "required": ["query"],
-        },
-    },
-    {
-        "name": "conversation_history",
-        "description": "Recall previous conversations with the crew. Should only be used when world_info returns no useful information, or to get further information on previous chats with the users",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "topic": {
-                    "type": "string",
-                    "description": "The conversation topic you want to remember things about",
-                    },
-            },
-        "required": ["topic"],
         },
     },
 ]
