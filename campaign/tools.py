@@ -121,10 +121,12 @@ def add_world_info(name, content):
     chunk_amount = len(chunks)
 
     for i, chunk in enumerate(chunks):
+        metadata = {"name": name, "num": i+1, "total": chunk_amount}
+        logger.info(f"adding: {chunk} with metadata {metadata}")
         world.add(
             ids=str(uuid.uuid4()),
             documents=chunk,
-            metadatas={"name": name, "num": i+1, "total": chunk_amount}
+            metadatas=metadata
         )
 
 
