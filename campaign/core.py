@@ -21,7 +21,6 @@ messages = [
 
 def query(message, author):
     global messages
-    maybe_relevant = tools.maybe_relevant(message)
 
     prompt = config.get("PROMPT") # .format(history=maybe_relevant)
 
