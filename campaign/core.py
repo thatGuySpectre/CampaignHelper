@@ -39,10 +39,13 @@ def query(message, author):
             except openai.error.InvalidRequestError as e:
                 messages.pop(1)
 
+        logger.info("response: " + str(response.choices[0].message))
+
         func = response.choices[0].message.get("function_call")
 
         if func:
             tool_response = tools.evaluate(func)
+            logger.info(f"{tool_response=}")
             if tool_response is not None:
                 messages += [
                     {"role": "assistant", "content": None, "function_call": {
@@ -76,8 +79,8 @@ def query(message, author):
     stop=tenacity.stop_after_attempt(10),
 )
 def _do_req(i):
-    logger.info("trying")
-    logger.info(f'{config["GPT"]["MODEL"]} : {config["GPT"]["TEMPERATURE"]} : {tools.TOOLS} : {messages}')
+    logger.info(f"trying: {i}")
+    # logger.info(f'{config["GPT"]["MODEL"]} : {config["GPT"]["TEMPERATURE"]} : {tools.TOOLS} : {messages}')
     if i < 4:
         response = openai.ChatCompletion.create(
             model=config["GPT"]["MODEL"],
