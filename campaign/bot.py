@@ -20,7 +20,7 @@ class Client(discord.Client):
         await self.tree.sync()
 
 
-intents = discord.Intents.none()
+intents = discord.Intents.all()
 
 bot = Client(intents=intents)
 
