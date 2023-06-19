@@ -114,7 +114,6 @@ def add_message(author, message):
             documents=message,
             metadatas={"time": time, "author": author, "num": i+1, "total": chunk_amount}
         )
-    db.persist()
 
 
 def add_world_info(name, content):
@@ -127,7 +126,6 @@ def add_world_info(name, content):
             documents=chunk,
             metadatas={"name": name, "num": i+1, "total": chunk_amount}
         )
-    db.persist()
 
 
 def map_split(content, hard_min=50, hard_max=400):
