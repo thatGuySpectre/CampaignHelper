@@ -30,8 +30,15 @@ def query(message, author):
     messages += [{"role": "user", "name": author, "content": message}]
 
     for i in range(5):
+        response = None
 
-        response = _do_req(i)
+        for j in range(5):
+            if response is not None:
+                break
+            try:
+                response = _do_req(i)
+            except openai.error.InvalidRequestError as e:
+                messages.pop(1)
 
         func = response.choices[0].message.get("function_call")
 
@@ -61,7 +68,7 @@ def query(message, author):
                 messages.pop(1)
 
             tools.add_message(author=author, message=message)
-            tools.add_message(author=config.get("AI_NAME"), message=response.choices[0].message.content)
+            tools.add_message(author=config.get("AI_NAME", "Assistant"), message=response.choices[0].message.content)
 
             return response.choices[0].message.content
 
