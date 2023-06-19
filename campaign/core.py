@@ -23,7 +23,7 @@ def query(message, author):
     global messages
     maybe_relevant = tools.maybe_relevant(message)
 
-    prompt = config.get("PROMPT").format(history=maybe_relevant)
+    prompt = config.get("PROMPT") # .format(history=maybe_relevant)
 
     messages[0]["content"] = prompt
 
@@ -67,8 +67,8 @@ def query(message, author):
             while sum([len(msg["content"].split(" ")) for msg in messages if msg["content"] is not None]) > 2000 and len(messages) > 2:
                 messages.pop(1)
 
-            tools.add_message(author=author, message=message)
-            tools.add_message(author=config.get("AI_NAME", "Assistant"), message=response.choices[0].message.content)
+            # tools.add_message(author=author, message=message)
+            # tools.add_message(author=config.get("AI_NAME", "Assistant"), message=response.choices[0].message.content)
 
             return response.choices[0].message.content
 
