@@ -109,6 +109,7 @@ def add_message(author, message):
     time = datetime.datetime.now().isoformat(timespec="minutes", sep=" ")
 
     for i, chunk in enumerate(chunks):
+        logger.info(f"adding with metadata {time=} {author=} {chunk_amount=}")
         history.add(
             ids=str(uuid.uuid4()),
             documents=message,
@@ -122,7 +123,6 @@ def add_world_info(name, content):
 
     for i, chunk in enumerate(chunks):
         metadata = {"name": name, "num": i+1, "total": chunk_amount}
-        logger.info(f"adding: {chunk} with metadata {metadata}")
         world.add(
             ids=str(uuid.uuid4()),
             documents=chunk,
@@ -159,7 +159,7 @@ def map_split(content, hard_min=50, hard_max=400):
 
     logger.debug(f"{split=}")
 
-    return [i for i in split if i is not ""]
+    return [i for i in split if i.strip() is not ""]
 
 
 TOOL_MAP = {
