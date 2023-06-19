@@ -30,7 +30,8 @@ async def on_message(ctx):
     logger.info("message: " + ctx.content)
     if ctx.author == bot.user:
         return
-    if bot.user.mentioned_in(ctx):
+    logger.info("content: " + ctx.content + " vs " + bot.user.mention)
+    if bot.user.mention in ctx.content:
         async with ctx.channel.typing():
             response = await aquery(message=ctx.content, author=ctx.author.name)
             await ctx.channel.send(response)
