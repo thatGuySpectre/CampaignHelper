@@ -76,7 +76,7 @@ def query(message, author):
 @tenacity.retry(
     retry=tenacity.retry_if_exception_type(openai.error.APIError),
     after=tenacity.after_log(logger, log_level=logging.INFO),
-    stop=tenacity.stop_after_attempt(10)
+    stop=tenacity.stop_after_attempt(10),
 )
 def _do_req(i):
     logger.info("trying")
