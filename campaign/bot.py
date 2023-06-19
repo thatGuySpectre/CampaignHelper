@@ -45,14 +45,14 @@ async def aquery(message, author):
 
 @bot.tree.command(description="Add a single text, identified by a title to give the bot context.")
 async def add_text(interaction, title: str, text: str):
-    await interaction.response.edit_message(content="Successfully added text to database. Try asking me about it!")
+    await interaction.response.send_message(content="Successfully added text to database. Try asking me about it!")
     add_world_info(name=title, content=text)
 
 
 @bot.tree.command(description="Add a text file, identified by a title to give the bot context.")
 async def add_file(interaction, title: str, file: discord.Attachment):
     if not file.content_type.startswith("text"):
-        await interaction.response.edit_message(content="Attachment has to be a text file")
+        await interaction.response.send_message(content="Attachment has to be a text file")
     else:
-        await interaction.response.edit_message(content="Successfully added file to database. Try asking me about it!")
+        await interaction.response.send_message(content="Successfully added file to database. Try asking me about it!")
         add_world_info(name=title, content=(await file.read()).decode())
