@@ -23,7 +23,7 @@ def query(message, author):
     global messages
     maybe_relevant = tools.maybe_relevant(message)
 
-    prompt = config.get("prompt").format(history=maybe_relevant)
+    prompt = config.get("PROMPT").format(history=maybe_relevant)
 
     messages[0]["content"] = prompt
 
