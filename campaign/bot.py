@@ -54,5 +54,5 @@ async def add_file(interaction, title: str, file: discord.Attachment):
     if not file.content_type.startswith("text"):
         await interaction.response.send_message("Attachment has to be a text file")
     else:
-        add_world_info(name=title, content=file.read())
+        add_world_info(name=title, content=(await file.read()).decode())
         await interaction.response.send_message("Successfully added file to database. Try asking me about it!")
