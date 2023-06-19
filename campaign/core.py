@@ -79,7 +79,9 @@ def query(message, author):
     stop=tenacity.stop_after_attempt(10),
 )
 def _do_req(i):
+    global messages
     logger.info(f"trying: {i}")
+    logger.info(f"{messages=}")
     # logger.info(f'{config["GPT"]["MODEL"]} : {config["GPT"]["TEMPERATURE"]} : {tools.TOOLS} : {messages}')
     if i < 4:
         response = openai.ChatCompletion.create(
