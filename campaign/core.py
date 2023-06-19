@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 messages = [
-    {"role": "system", "content": config.get("prompt"), "tokens": 0}
+    {"role": "system", "content": config.get("prompt")}
 ]
 
 
