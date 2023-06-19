@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 messages = [
-    {"role": "system", "content": config.get("prompt")}
+    {"role": "system", "content": config.get("prompt"), "tokens": 0}
 ]
 
 
@@ -57,6 +57,8 @@ def query(message, author):
 
             if len(messages) > config.get("MEMORY_MAX"):
                 messages = messages[:1] + messages[-config.get("MEMORY_MAX"):-1]
+            while sum([len(msg["content"].split(" ")) for msg in messages]) > 2000 and len(messages) > 2:
+                messages.pop(1)
 
             tools.add_message(author=author, message=message)
             tools.add_message(author="Erebos", message=response.choices[0].message.content)
