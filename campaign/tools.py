@@ -119,18 +119,18 @@ def map_split(content, hard_min=50, hard_max=400):
 
 
 TOOL_MAP = {
-    "world_info": world_info,
+    "information": world_info,
 }
 TOOLS = [
     {
-        "name": "world_info",
-        "description": "Get information about the world, specific events, characters or places.",
+        "name": "information",
+        "description": "Get information about the world, specific events, characters, places or yourself.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "The topic you want to get information about.",
+                    "description": "the topic you need information about. you should ask specific questions.",
                     },
             },
         "required": ["query"],
