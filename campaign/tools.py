@@ -16,7 +16,7 @@ logger = logging.getLogger()
 db = chromadb.Client(chromadb.Settings(chroma_api_impl="rest",
                                        chroma_server_host=config.get("CHROMA").get("HOST"),
                                        chroma_server_http_port=config.get("CHROMA").get("PORT")
-))
+                                       ))
 
 world = db.get_or_create_collection(
     name=f"{config.get('NAME')}-world",
@@ -67,7 +67,7 @@ def evaluate(call):
     try:
         arguments = json.loads(args)
     except json.decoder.JSONDecodeError as err:
-        logger.info("invalid json")
+        logger.info("invalid json", err)
         return None
 
     return func(**arguments)
@@ -78,7 +78,7 @@ def add_world_info(name, content):
     chunk_amount = len(chunks)
 
     for i, chunk in enumerate(chunks):
-        metadata = {"name": name, "num": i+1, "total": chunk_amount}
+        metadata = {"name": name, "num": i + 1, "total": chunk_amount}
         world.add(
             ids=str(uuid.uuid4()),
             documents=chunk,
@@ -101,12 +101,12 @@ def map_split(content, hard_min=50, hard_max=400):
                         split_index = min(val.rfind(char, 0, mid), val.find(char, mid), key=lambda x: abs(mid - x))
                         if len(val[:split_index].strip()) < hard_min or len(val[split_index:].strip()) < hard_min:
                             continue
-                        new_split.append(val[:split_index+1])
-                        new_split.append(val[split_index+1:])
+                        new_split.append(val[:split_index + 1])
+                        new_split.append(val[split_index + 1:])
                         break
             elif len(val) < hard_min and i < len(split) - 1:
-                if len(split[i+1]) < hard_max//2:
-                    new_split.append(val + split[i+1])
+                if len(split[i + 1]) < hard_max // 2:
+                    new_split.append(val + split[i + 1])
                     next(steps)
             else:
                 if val.strip():
@@ -131,11 +131,9 @@ TOOLS = [
                 "query": {
                     "type": "string",
                     "description": "the topic you need information about. you should ask specific questions.",
-                    },
+                },
             },
-        "required": ["query"],
+            "required": ["query"],
         },
     },
 ]
-
-
